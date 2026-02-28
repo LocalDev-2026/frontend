@@ -46,22 +46,22 @@ const Home = () => {
                     <CategoryCard
                         title="Guesthouses"
                         link="/listings?category=guesthouse"
-                        image="https://images.unsplash.com/photo-1560130958-fded4f277eb3?w=600&q=80"
+                        image="https://images.unsplash.com/photo-1549557404-5544715566d9?w=800&q=80"
                     />
                     <CategoryCard
                         title="Tours & Treks"
                         link="/listings?category=tour"
-                        image="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80"
+                        image="https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80"
                     />
                     <CategoryCard
-                        title="Yurt Stays"
-                        link="/listings?category=guesthouse"
-                        image="https://images.unsplash.com/photo-1549557404-5544715566d9?w=600&q=80"
+                        title="Luxury Resorts"
+                        link="/listings?category=resort"
+                        image="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80"
                     />
                     <CategoryCard
                         title="Local Products"
                         link="/listings?category=product"
-                        image="https://images.unsplash.com/photo-1607082352121-5240bab999e8?w=600&q=80"
+                        image="https://images.unsplash.com/photo-1596238426034-318e88941038?w=800&q=80"
                     />
                 </div>
             </section>
