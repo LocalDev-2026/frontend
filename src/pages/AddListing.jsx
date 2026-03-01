@@ -12,11 +12,24 @@ const AddListing = () => {
         price: '',
         location: '',
         description: '',
-        image: '',
     });
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState('');
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const handleSubmit = (e) => {
@@ -29,7 +42,7 @@ const AddListing = () => {
             hostId: user.id,
             ...formData,
             price: Number(formData.price),
-            images: [formData.image || 'https://images.unsplash.com/photo-1560130958-fded4f277eb3?w=800&q=80'], // Fallback image
+            images: [imagePreview || 'https://images.unsplash.com/photo-1560130958-fded4f277eb3?w=800&q=80'], // Use uploaded image or fallback
             rating: 0,
             reviews: 0,
             status: 'pending', // IMPORTANT: Pending by default
@@ -68,6 +81,7 @@ const AddListing = () => {
                             style={{ width: '100%', padding: '10px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}
                         >
                             <option value="guesthouse">Guesthouse</option>
+                            <option value="room">Room</option>
                             <option value="tour">Tour</option>
                             <option value="product">Product</option>
                             <option value="resort">Resort</option>
@@ -112,15 +126,23 @@ const AddListing = () => {
                 </div>
 
                 <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Image URL</label>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Upload Picture</label>
                     <input
-                        type="url"
-                        name="image"
-                        placeholder="https://example.com/image.jpg"
-                        value={formData.image}
-                        onChange={handleChange}
-                        style={{ width: '100%', padding: '10px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        style={{ width: '100%', marginBottom: '10px' }}
                     />
+                    {imagePreview && (
+                        <div style={{ marginTop: '10px' }}>
+                            <p style={{ fontSize: '14px', marginBottom: '5px' }}>Preview:</p>
+                            <img
+                                src={imagePreview}
+                                alt="Preview"
+                                style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }}
+                            />
+                        </div>
+                    )}
                 </div>
 
                 <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '14px' }}>

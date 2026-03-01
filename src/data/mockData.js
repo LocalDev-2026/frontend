@@ -32,8 +32,7 @@ export const listings = [
         location: 'Tash Rabat, Naryn',
         description: 'Experience authentic nomadic life in a comfortable yurt near the historic Tash Rabat Caravanserai. Wake up to the sound of nature and enjoy traditional Kyrgyz hospitality.',
         images: [
-            'https://images.unsplash.com/photo-1549557404-5544715566d9?w=1200&q=80',
-            'https://images.unsplash.com/photo-1628198759080-605bb1da7697?w=1200&q=80'
+            '../src/yurts.jpg'
         ],
         rating: 4.8,
         reviews: 24,
@@ -51,8 +50,7 @@ export const listings = [
         location: 'Naryn Riverside',
         description: 'A premium riverside resort offering stunning mountain views and modern amenities. Perfect for families and business travelers alike.',
         images: [
-            'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80',
-            'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&q=80'
+            '../src/resort.jpg'
         ],
         rating: 4.6,
         reviews: 15,
@@ -89,7 +87,7 @@ export const listings = [
         location: 'Kochkor Workshop',
         description: 'A masterpiece of Kyrgyz craftsmanship. This heavy felt rug features traditional patterns symbolizing health and prosperity.',
         images: [
-            'https://images.unsplash.com/photo-1596238426034-318e88941038?w=1200&q=80'
+            '../src/shardak.jpg'
         ],
         rating: 4.9,
         reviews: 7,

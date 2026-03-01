@@ -60,6 +60,7 @@ const Navbar = () => {
                 {/* Desktop Menu */}
                 <div className="desktop-menu" style={{ display: 'flex', gap: 'var(--spacing-lg)', alignItems: 'center' }}>
                     <Link to="/listings?category=guesthouse">Guesthouses</Link>
+                    <Link to="/listings?category=room">Rooms</Link>
                     <Link to="/listings?category=resort">Resorts</Link>
                     <Link to="/listings?category=tour">Tours</Link>
                     <Link to="/listings?category=product">Local Products</Link>
