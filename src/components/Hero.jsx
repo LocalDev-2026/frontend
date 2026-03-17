@@ -1,6 +1,9 @@
 import { Search } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
+    const { t } = useTranslation();
+
     return (
         <div className="hero" style={{
             position: 'relative',
@@ -22,7 +25,7 @@ const Hero = () => {
                     marginBottom: 'var(--spacing-md)',
                     textShadow: '0 2px 4px rgba(0,0,0,0.5)'
                 }}>
-                    Discover the Soul of Naryn
+                    {t('hero.title')}
                 </h1>
                 <p style={{
                     fontSize: 'var(--font-size-xl)',
@@ -31,7 +34,7 @@ const Hero = () => {
                     margin: '0 auto var(--spacing-xl) auto',
                     textShadow: '0 1px 2px rgba(0,0,0,0.5)'
                 }}>
-                    Authentic yurts, breathtaking mountains, and local treasures.
+                    {t('hero.subtitle')}
                 </p>
 
                 {/* Search Bar */}
@@ -49,7 +52,7 @@ const Hero = () => {
                     <Search size={24} color="var(--color-primary)" style={{ marginLeft: '16px' }} />
                     <input
                         type="text"
-                        placeholder="Try 'Yurt in Song-Kul' or 'Horse Trekking'..."
+                        placeholder={t('hero.search_placeholder')}
                         style={{
                             border: 'none',
                             padding: '16px',
@@ -60,14 +63,14 @@ const Hero = () => {
                         }}
                     />
                     <button className="btn btn-primary" style={{ borderRadius: 'var(--radius-full)', padding: '16px 32px', fontSize: '1.1rem' }}>
-                        Search
+                        {t('hero.search_btn')}
                     </button>
                 </div>
 
                 {/* Quick Tags */}
                 <div style={{ marginTop: 'var(--spacing-md)', display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                    <span style={{ color: 'white', fontWeight: 500, textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>Trending:</span>
-                    {['Yurt Stays', 'Kel-Suu Lake', 'Shirdak Rugs', 'Horse Riding'].map(tag => (
+                    <span style={{ color: 'white', fontWeight: 500, textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>{t('hero.trending')}</span>
+                    {[t('hero.tag_1'), t('hero.tag_2'), t('hero.tag_3'), t('hero.tag_4')].map(tag => (
                         <button key={tag} style={{
                             backgroundColor: 'rgba(255, 255, 255, 0.2)',
                             backdropFilter: 'blur(4px)',

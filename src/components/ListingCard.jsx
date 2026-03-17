@@ -1,7 +1,10 @@
 import { MapPin, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const ListingCard = ({ listing }) => {
+    const { t } = useTranslation();
+
     return (
         <Link to={`/listings/${listing.id}`} className="card" style={{ display: 'block', textDecoration: 'none', color: 'inherit', height: '100%' }}>
             <div style={{ position: 'relative', height: '200px', overflow: 'hidden' }}>
@@ -22,7 +25,7 @@ const ListingCard = ({ listing }) => {
                     fontWeight: 'bold',
                     boxShadow: 'var(--shadow-sm)'
                 }}>
-                    ${listing.price}
+                    ${listing.price} / {t('listing.night')}
                 </div>
             </div>
             <div style={{ padding: 'var(--spacing-md)' }}>
@@ -30,7 +33,7 @@ const ListingCard = ({ listing }) => {
                     <h3 style={{ fontSize: '1.1rem', fontWeight: 600, margin: 0 }}>{listing.title}</h3>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.9rem' }}>
                         <Star size={14} fill="var(--color-warning)" color="var(--color-warning)" />
-                        <span>{listing.rating || 'New'}</span>
+                        <span>{listing.rating || t('details.new')}</span>
                     </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-text-muted)', fontSize: '0.9rem', marginBottom: 'var(--spacing-sm)' }}>

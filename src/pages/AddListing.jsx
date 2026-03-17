@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { listings } from '../data/mockData';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 const AddListing = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         title: '',
         category: 'guesthouse',
@@ -50,17 +52,17 @@ const AddListing = () => {
         };
 
         listings.push(newListing); // Mutating mock data directly for prototype
-        alert('Listing submitted successfully! It is now pending admin approval.');
+        alert(t('add_listing.success_message'));
         navigate('/host');
     };
 
     return (
         <div className="container" style={{ maxWidth: '600px' }}>
-            <h1 style={{ marginBottom: 'var(--spacing-lg)' }}>Add New Listing</h1>
+            <h1 style={{ marginBottom: 'var(--spacing-lg)' }}>{t('add_listing.title')}</h1>
             <form onSubmit={handleSubmit} className="card" style={{ padding: 'var(--spacing-xl)' }}>
 
                 <div style={{ marginBottom: 'var(--spacing-md)' }}>
-                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Listing Title</label>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>{t('add_listing.listing_title')}</label>
                     <input
                         type="text"
                         name="title"
@@ -73,22 +75,22 @@ const AddListing = () => {
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-md)', marginBottom: 'var(--spacing-md)' }}>
                     <div>
-                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Category</label>
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>{t('add_listing.category')}</label>
                         <select
                             name="category"
                             value={formData.category}
                             onChange={handleChange}
                             style={{ width: '100%', padding: '10px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}
                         >
-                            <option value="guesthouse">Guesthouse</option>
-                            <option value="room">Room</option>
-                            <option value="tour">Tour</option>
-                            <option value="product">Product</option>
-                            <option value="resort">Resort</option>
+                            <option value="guesthouse">{t('categories.guesthouses')}</option>
+                            <option value="room">{t('categories.rooms')}</option>
+                            <option value="tour">{t('categories.tours')}</option>
+                            <option value="product">{t('categories.products')}</option>
+                            <option value="resort">{t('categories.resorts')}</option>
                         </select>
                     </div>
                     <div>
-                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Price ($)</label>
+                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>{t('add_listing.price_usd')}</label>
                         <input
                             type="number"
                             name="price"
@@ -101,11 +103,11 @@ const AddListing = () => {
                 </div>
 
                 <div style={{ marginBottom: 'var(--spacing-md)' }}>
-                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Location</label>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>{t('add_listing.location')}</label>
                     <input
                         type="text"
                         name="location"
-                        placeholder="e.g. Naryn City"
+                        placeholder={t('add_listing.location_placeholder')}
                         required
                         value={formData.location}
                         onChange={handleChange}
@@ -114,7 +116,7 @@ const AddListing = () => {
                 </div>
 
                 <div style={{ marginBottom: 'var(--spacing-md)' }}>
-                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Description</label>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>{t('add_listing.description')}</label>
                     <textarea
                         name="description"
                         rows="4"
@@ -126,7 +128,7 @@ const AddListing = () => {
                 </div>
 
                 <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Upload Picture</label>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>{t('add_listing.upload_picture')}</label>
                     <input
                         type="file"
                         accept="image/*"
@@ -135,10 +137,10 @@ const AddListing = () => {
                     />
                     {imagePreview && (
                         <div style={{ marginTop: '10px' }}>
-                            <p style={{ fontSize: '14px', marginBottom: '5px' }}>Preview:</p>
+                            <p style={{ fontSize: '14px', marginBottom: '5px' }}>{t('add_listing.preview')}</p>
                             <img
                                 src={imagePreview}
-                                alt="Preview"
+                                alt={t('add_listing.preview')}
                                 style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }}
                             />
                         </div>
@@ -146,7 +148,7 @@ const AddListing = () => {
                 </div>
 
                 <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '14px' }}>
-                    Submit Listing
+                    {t('add_listing.submit')}
                 </button>
             </form>
         </div>

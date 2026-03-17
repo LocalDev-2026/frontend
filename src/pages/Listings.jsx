@@ -3,10 +3,12 @@ import { useSearchParams } from 'react-router-dom';
 import { listings } from '../data/mockData';
 import ListingCard from '../components/ListingCard';
 import { Filter, Star, DollarSign } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Listings = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const categoryFilter = searchParams.get('category');
+    const { t } = useTranslation();
 
     // Filters State
     const [priceRange, setPriceRange] = useState([0, 1000]);
@@ -44,18 +46,18 @@ const Listings = () => {
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: 'var(--spacing-lg)' }}>
                     <Filter size={20} />
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: 600 }}>Filters</h3>
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: 600 }}>{t('listings.filters')}</h3>
                 </div>
 
                 {/* Price Filter */}
                 <div style={{ marginBottom: 'var(--spacing-xl)' }}>
                     <h4 style={{ marginBottom: 'var(--spacing-sm)', fontSize: '0.9rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        Price Range (USD)
+                        {t('listings.price_range_usd')}
                     </h4>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <input
                             type="number"
-                            placeholder="Min"
+                            placeholder={t('listings.min')}
                             value={priceRange[0]}
                             onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
                             style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid var(--color-border)' }}
@@ -63,7 +65,7 @@ const Listings = () => {
                         <span>-</span>
                         <input
                             type="number"
-                            placeholder="Max"
+                            placeholder={t('listings.max')}
                             value={priceRange[1]}
                             onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
                             style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid var(--color-border)' }}
@@ -74,7 +76,7 @@ const Listings = () => {
                 {/* Rating Filter */}
                 <div>
                     <h4 style={{ marginBottom: 'var(--spacing-sm)', fontSize: '0.9rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        Minimum Rating
+                        {t('listings.min_rating')}
                     </h4>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         {[4, 3, 2, 0].map(rating => (
@@ -89,7 +91,7 @@ const Listings = () => {
                                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                         {rating}+ <Star size={14} fill="var(--color-warning)" color="var(--color-warning)" />
                                     </span>
-                                ) : 'Any rating'}
+                                ) : t('listings.any_rating')}
                             </label>
                         ))}
                     </div>
@@ -100,10 +102,10 @@ const Listings = () => {
             <main>
                 <header style={{ marginBottom: 'var(--spacing-xl)' }}>
                     <h2 style={{ fontSize: 'var(--font-size-xxl)', marginBottom: 'var(--spacing-xs)' }}>
-                        {categoryFilter ? `${categoryFilter.charAt(0).toUpperCase() + categoryFilter.slice(1)}s` : 'All Listings'}
+                        {categoryFilter ? t(`categories.${categoryFilter}s`) : t('listings.all_listings')}
                     </h2>
                     <p style={{ color: 'var(--color-text-muted)' }}>
-                        {filteredListings.length} results found in this category
+                        {t('listings.results_found', { count: filteredListings.length })}
                     </p>
                 </header>
 
@@ -115,13 +117,13 @@ const Listings = () => {
                     </div>
                 ) : (
                     <div style={{ textAlign: 'center', padding: 'var(--spacing-xxl)', color: 'var(--color-text-muted)', backgroundColor: '#f9fafb', borderRadius: 'var(--radius-lg)' }}>
-                        <p style={{ fontSize: '1.2rem' }}>No listings found matching your criteria.</p>
+                        <p style={{ fontSize: '1.2rem' }}>{t('listings.no_results')}</p>
                         <button
                             className="btn btn-outline"
                             style={{ marginTop: 'var(--spacing-md)' }}
                             onClick={() => { setPriceRange([0, 1000]); setMinRating(0); }}
                         >
-                            Reset all filters
+                            {t('listings.reset_filters')}
                         </button>
                     </div>
                 )}

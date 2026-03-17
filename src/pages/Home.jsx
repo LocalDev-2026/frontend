@@ -1,5 +1,6 @@
 import Hero from '../components/Hero';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const CategoryCard = ({ title, image, link }) => (
     <Link to={link} className="category-card" style={{
@@ -30,6 +31,8 @@ const CategoryCard = ({ title, image, link }) => (
 );
 
 const Home = () => {
+    const { t } = useTranslation();
+
     return (
         <>
             <Hero />
@@ -40,26 +43,26 @@ const Home = () => {
                     marginBottom: 'var(--spacing-xl)',
                     textAlign: 'center'
                 }}>
-                    Explore Categories
+                    {t('home.featured')}
                 </h2>
                 <div className="grid-cols-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 'var(--spacing-md)' }}>
                     <CategoryCard
-                        title="Guesthouses"
+                        title={t('categories.guesthouses')}
                         link="/listings?category=guesthouse"
                         image="https://images.unsplash.com/photo-1549557404-5544715566d9?w=800&q=80"
                     />
                     <CategoryCard
-                        title="Tours & Treks"
+                        title={t('categories.tours')}
                         link="/listings?category=tour"
                         image="https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80"
                     />
                     <CategoryCard
-                        title="Luxury Resorts"
+                        title={t('categories.resorts')}
                         link="/listings?category=resort"
                         image="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80"
                     />
                     <CategoryCard
-                        title="Local Products"
+                        title={t('categories.products')}
                         link="/listings?category=product"
                         image="https://images.unsplash.com/photo-1596238426034-318e88941038?w=800&q=80"
                     />
@@ -70,12 +73,12 @@ const Home = () => {
                 <div className="container">
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                         <h2 style={{ fontSize: 'var(--font-size-xxl)', marginBottom: 'var(--spacing-md)' }}>
-                            Are you a local business owner?
+                            {t('home.host_prompt')}
                         </h2>
                         <p style={{ maxWidth: '600px', marginBottom: 'var(--spacing-lg)', color: 'var(--color-text-muted)' }}>
-                            Join our marketplace to showcase your guesthouse, tours, or handcrafted products to travelers from around the world.
+                            {t('home.host_desc')}
                         </p>
-                        <Link to="/login" className="btn btn-primary">Become a Host</Link>
+                        <Link to="/login" className="btn btn-primary">{t('home.become_host')}</Link>
                     </div>
                 </div>
             </section>
