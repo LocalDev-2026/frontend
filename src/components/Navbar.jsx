@@ -26,17 +26,20 @@ const Navbar = () => {
             top: 0,
             zIndex: 1000
         }}>
-            <div className="container" style={{
+            <div style={{
+                maxWidth: '100%',
+                padding: '0 32px',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                height: '70px'
+                height: '80px'
             }}>
                 <Link to="/" style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px',
-                    textDecoration: 'none'
+                    textDecoration: 'none',
+                    minWidth: '200px'
                 }}>
                     <div style={{
                         backgroundColor: '#16a34a', // Green background like in the image
@@ -60,14 +63,27 @@ const Navbar = () => {
                     </span>
                 </Link>
 
-                {/* Desktop Menu */}
-                <div className="desktop-menu" style={{ display: 'flex', gap: 'var(--spacing-lg)', alignItems: 'center' }}>
-                    <Link to="/listings?category=guesthouse">{t('nav.discover')} {t('categories.guesthouses')}</Link>
-                    <Link to="/listings?category=room">{t('nav.discover')} {t('categories.rooms')}</Link>
-                    <Link to="/listings?category=resort">{t('nav.discover')} {t('categories.resorts')}</Link>
-                    <Link to="/listings?category=tour">{t('nav.discover')} {t('categories.tours')}</Link>
-                    <Link to="/listings?category=product">{t('categories.products')}</Link>
-                    
+                {/* Central Navigation Links */}
+                <div className="desktop-menu-links" style={{ display: 'flex', gap: '40px', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                    <Link to="/listings?category=guesthouse" style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: '500', fontSize: '1rem', transition: 'color var(--transition-fast)' }}>
+                        {t('categories.guesthouses')}
+                    </Link>
+                    <Link to="/listings?category=room" style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: '500', fontSize: '1rem', transition: 'color var(--transition-fast)' }}>
+                        {t('categories.rooms')}
+                    </Link>
+                    <Link to="/listings?category=resort" style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: '500', fontSize: '1rem', transition: 'color var(--transition-fast)' }}>
+                        {t('categories.resorts')}
+                    </Link>
+                    <Link to="/listings?category=tour" style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: '500', fontSize: '1rem', transition: 'color var(--transition-fast)' }}>
+                        {t('categories.tours')}
+                    </Link>
+                    <Link to="/listings?category=product" style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: '500', fontSize: '1rem', transition: 'color var(--transition-fast)' }}>
+                        {t('categories.products')}
+                    </Link>
+                </div>
+
+                {/* Right Side Actions */}
+                <div style={{ display: 'flex', gap: '32px', alignItems: 'center', minWidth: '200px', justifyContent: 'flex-end' }}>
                     <LanguageSwitcher />
 
                     {user ? (
