@@ -34,10 +34,10 @@ export const AuthProvider = ({ children }) => {
             setUser(data.user);
             localStorage.setItem('naryn_token', data.token);
             localStorage.setItem('naryn_user', JSON.stringify(data.user));
-            return true;
+            return { success: true };
         } catch (error) {
             console.error('Login error:', error);
-            return false;
+            return { success: false, error: error.message };
         }
     };
 
@@ -50,10 +50,10 @@ export const AuthProvider = ({ children }) => {
             setUser(data.user);
             localStorage.setItem('naryn_token', data.token);
             localStorage.setItem('naryn_user', JSON.stringify(data.user));
-            return true;
+            return { success: true };
         } catch (error) {
             console.error('Registration error:', error);
-            return false;
+            return { success: false, error: error.message };
         }
     };
 

@@ -19,18 +19,18 @@ const Login = () => {
         setError('');
         
         if (isLogin) {
-            const success = await login(email, password);
-            if (success) {
+            const result = await login(email, password);
+            if (result.success) {
                 navigate('/');
             } else {
-                setError(t('login.error_not_found'));
+                setError(result.error || t('login.error_not_found'));
             }
         } else {
-            const success = await register(name, email, password, role);
-            if (success) {
+            const result = await register(name, email, password, role);
+            if (result.success) {
                 navigate('/');
             } else {
-                setError(t('register.error'));
+                setError(result.error || t('register.error'));
             }
         }
     };
