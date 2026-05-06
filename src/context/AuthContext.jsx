@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { users } from '../data/mockData';
+import api from '../utils/api';
 
 const AuthContext = createContext();
 
@@ -10,32 +10,64 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Simulate checking local storage or session
         const storedUser = localStorage.getItem('naryn_user');
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
+        const token = localStorage.getItem('naryn_token');
+        console.log('AuthProvider Init:', { hasUser: !!storedUser, hasToken: !!token });
+        if (storedUser && token) {
+            try {
+                setUser(JSON.parse(storedUser));
+            } catch (e) {
+                console.error('Failed to parse stored user');
+                localStorage.removeItem('naryn_user');
+                localStorage.removeItem('naryn_token');
+            }
         }
         setLoading(false);
     }, []);
 
-    const login = (email) => {
-        const foundUser = users.find(u => u.email === email);
-        if (foundUser) {
-            setUser(foundUser);
-            localStorage.setItem('naryn_user', JSON.stringify(foundUser));
+    const login = async (email, password) => {
+        try {
+            const data = await api('/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ email, password })
+            });
+            setUser(data.user);
+            localStorage.setItem('naryn_token', data.token);
+            localStorage.setItem('naryn_user', JSON.stringify(data.user));
             return true;
+        } catch (error) {
+            console.error('Login error:', error);
+            return false;
         }
-        return false;
+    };
+
+    const register = async (name, email, password, role) => {
+        try {
+            const data = await api('/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({ name, email, password, role })
+            });
+            setUser(data.user);
+            localStorage.setItem('naryn_token', data.token);
+            localStorage.setItem('naryn_user', JSON.stringify(data.user));
+            return true;
+        } catch (error) {
+            console.error('Registration error:', error);
+            return false;
+        }
     };
 
     const logout = () => {
+        console.log('Logging out...');
         setUser(null);
         localStorage.removeItem('naryn_user');
+        localStorage.removeItem('naryn_token');
     };
 
     const value = {
         user,
         login,
+        register,
         logout,
         loading
     };

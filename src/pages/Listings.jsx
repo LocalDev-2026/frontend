@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { listings } from '../data/mockData';
+import api from '../utils/api';
 import ListingCard from '../components/ListingCard';
 import { Filter, Star, DollarSign } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -10,9 +10,21 @@ const Listings = () => {
     const categoryFilter = searchParams.get('category');
     const { t } = useTranslation();
 
-    // Filters State
+    const [listings, setListings] = useState([]);
     const [priceRange, setPriceRange] = useState([0, 1000]);
     const [minRating, setMinRating] = useState(0);
+
+    useEffect(() => {
+        const fetchListings = async () => {
+            try {
+                const data = await api('/listings');
+                setListings(data);
+            } catch (error) {
+                console.error('Fetch listings error:', error);
+            }
+        };
+        fetchListings();
+    }, []);
 
     const filteredListings = useMemo(() => {
         const result = listings.filter(item => {
@@ -29,7 +41,7 @@ const Listings = () => {
             const scoreB = (b.rating || 0) + (Math.log10((b.reviews || 0) + 1) * 0.5);
             return scoreB - scoreA;
         });
-    }, [categoryFilter, priceRange, minRating]);
+    }, [listings, categoryFilter, priceRange, minRating]);
 
     return (
         <div className="container" style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: 'var(--spacing-xl)', paddingTop: 'var(--spacing-xl)' }}>

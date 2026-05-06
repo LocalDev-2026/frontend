@@ -1,8 +1,9 @@
 import { useAuth } from '../context/AuthContext';
-import { listings, bookings } from '../data/mockData';
 import { BarChart, DollarSign, List, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useState, useEffect } from 'react';
+import api from '../utils/api';
 
 const StatCard = ({ title, value, icon: Icon, color }) => (
     <div className="card" style={{ padding: 'var(--spacing-lg)', display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)' }}>
@@ -29,12 +30,37 @@ const HostDashboard = () => {
     const { user } = useAuth();
     const { t } = useTranslation();
 
-    if (!user || user.role !== 'host') { // Simple unauthorized protection
+    const [myListings, setMyListings] = useState([]);
+    const [myBookings, setMyBookings] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!user) return;
+
+        const fetchData = async () => {
+            try {
+                // Fetch all listings to filter by hostId (or use a dedicated endpoint)
+                const listingsData = await api('/listings?status=all');
+                const filteredListings = Array.isArray(listingsData) ? listingsData.filter(l => l.hostId === user.id) : [];
+                setMyListings(filteredListings);
+
+                const bookingsData = await api('/bookings/my-bookings');
+                setMyBookings(Array.isArray(bookingsData) ? bookingsData : []);
+            } catch (error) {
+                console.error('Fetch host data error:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [user]);
+
+    if (!user || user.role !== 'host') {
         return <div className="container">{t('host.access_denied')}</div>;
     }
 
-    const myListings = listings.filter(l => l.hostId === user.id);
-    const myBookings = bookings.filter(b => myListings.some(l => l.id === b.listingId));
+    if (loading) return <div className="container">{t('common.loading')}</div>;
+
     const totalEarnings = myBookings.reduce((sum, b) => sum + b.totalPrice, 0);
 
     return (

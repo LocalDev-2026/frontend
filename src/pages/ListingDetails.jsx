@@ -1,21 +1,40 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { listings, users } from '../data/mockData';
 import { MapPin, Star, User, Calendar, DollarSign } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import api from '../utils/api';
 
 const ListingDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
     const { t } = useTranslation();
-    const listing = listings.find(l => l.id === id);
-    const host = users.find(u => u.id === listing?.hostId);
+
+    const [listing, setListing] = useState(null);
+    const [host, setHost] = useState(null);
+    const [loading, setLoading] = useState(true);
+
     const [checkIn, setCheckIn] = useState('');
     const [checkOut, setCheckOut] = useState('');
     const [adults, setAdults] = useState(1);
     const [children, setChildren] = useState(0);
+
+    useEffect(() => {
+        const fetchListingData = async () => {
+            try {
+                const listingData = await api(`/listings/${id}`);
+                setListing(listingData);
+                // For simplicity, we'll assume Bob is the host for seed listings (id 2)
+                setHost({ name: 'Bob Host', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop' });
+            } catch (error) {
+                console.error('Fetch listing details error:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchListingData();
+    }, [id]);
 
     const calculateNights = () => {
         if (!checkIn || !checkOut) return 0;
@@ -26,11 +45,12 @@ const ListingDetails = () => {
     };
 
     const nights = calculateNights();
-    const totalPrice = listing.price * nights;
+    const totalPrice = listing ? listing.price * nights : 0;
 
+    if (loading) return <div className="container">{t('common.loading')}</div>;
     if (!listing) return <div className="container">{t('details.not_found')}</div>;
 
-    const handleBooking = (e) => {
+    const handleBooking = async (e) => {
         e.preventDefault();
         if (!user) {
             alert(t('details.login_required'));
@@ -41,7 +61,21 @@ const ListingDetails = () => {
             alert(t('details.invalid_dates'));
             return;
         }
-        alert(t('details.booking_alert', { title: listing.title, start: checkIn, end: checkOut, adults: adults, children: children, price: totalPrice }));
+
+        try {
+            await api('/bookings', {
+                method: 'POST',
+                body: JSON.stringify({
+                    listingId: listing.id,
+                    date: checkIn,
+                    totalPrice: totalPrice
+                })
+            });
+            alert(t('details.booking_success'));
+            navigate('/');
+        } catch (error) {
+            alert(error.message);
+        }
     };
 
     return (

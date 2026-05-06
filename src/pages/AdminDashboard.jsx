@@ -1,28 +1,52 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { listings } from '../data/mockData';
 import { Check, X, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import api from '../utils/api';
 
 const AdminDashboard = () => {
     const { user } = useAuth();
     const { t } = useTranslation();
-    const [refresh, setRefresh] = useState(0); // Simple way to force re-render after mock data mutation
+    const [listings, setListings] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!user || user.role !== 'admin') return;
+        fetchListings();
+    }, [user]);
 
     if (!user || user.role !== 'admin') {
         return <div className="container">{t('admin.access_denied')}</div>;
     }
 
+    if (loading) return <div className="container">{t('common.loading')}</div>;
+
     const pendingListings = listings.filter(l => l.status === 'pending');
     const activeListings = listings.filter(l => l.status === 'approved');
 
-    const handleStatusChange = (id, newStatus) => {
-        const listing = listings.find(l => l.id === id);
-        if (listing) {
-            listing.status = newStatus;
-            setRefresh(refresh + 1); // Trigger re-render
+    const fetchListings = async () => {
+        try {
+            const data = await api('/listings?status=all');
+            setListings(Array.isArray(data) ? data : []);
+        } catch (error) {
+            console.error('Fetch admin data error:', error);
+            setListings([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleStatusChange = async (id, newStatus) => {
+        try {
+            await api(`/listings/${id}/status`, {
+                method: 'PATCH',
+                body: JSON.stringify({ status: newStatus })
+            });
+            fetchListings();
             alert(t('admin.success', { status: newStatus }));
+        } catch (error) {
+            alert(error.message);
         }
     };
 

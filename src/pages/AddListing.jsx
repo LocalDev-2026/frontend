@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { listings } from '../data/mockData';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import api from '../utils/api';
 
 const AddListing = () => {
     const navigate = useNavigate();
@@ -17,6 +17,7 @@ const AddListing = () => {
     });
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState('');
+    const [submitting, setSubmitting] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,26 +35,32 @@ const AddListing = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!user) return;
+        setSubmitting(true);
 
-        // Simulate adding data (in a real app this would be an API call)
-        const newListing = {
-            id: `l${Date.now()}`,
-            hostId: user.id,
-            ...formData,
-            price: Number(formData.price),
-            images: [imagePreview || 'https://images.unsplash.com/photo-1560130958-fded4f277eb3?w=800&q=80'], // Use uploaded image or fallback
-            rating: 0,
-            reviews: 0,
-            status: 'pending', // IMPORTANT: Pending by default
-            amenities: []
-        };
+        try {
+            const payload = {
+                ...formData,
+                price: Number(formData.price),
+                images: [imagePreview || 'https://images.unsplash.com/photo-1560130958-fded4f277eb3?w=800&q=80'],
+                availableRooms: 1, // Default for now
+                maxGuests: 2, // Default for now
+            };
 
-        listings.push(newListing); // Mutating mock data directly for prototype
-        alert(t('add_listing.success_message'));
-        navigate('/host');
+            await api('/listings', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+
+            alert(t('add_listing.success_message'));
+            navigate('/host');
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -147,8 +154,8 @@ const AddListing = () => {
                     )}
                 </div>
 
-                <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '14px' }}>
-                    {t('add_listing.submit')}
+                <button type="submit" className="btn btn-primary" disabled={submitting} style={{ width: '100%', padding: '14px' }}>
+                    {submitting ? t('common.loading') : t('add_listing.submit')}
                 </button>
             </form>
         </div>

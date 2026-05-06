@@ -66,8 +66,26 @@
     "error_not_found": "User not found. Try one of the demo accounts.",
     "email_label": "Email Address",
     "email_placeholder": "Enter email...",
+    "password_label": "Password",
     "button": "Login",
-    "demo_accounts": "Demo Accounts (Click to login):"
+    "demo_accounts": "Demo Accounts (Click to login):",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "sign_up": "Sign up here",
+    "login_here": "Login here"
+  },
+  "register": {
+    "title": "Create an Account",
+    "name_label": "Full Name",
+    "name_placeholder": "Your Name",
+    "email_label": "Email Address",
+    "password_label": "Password",
+    "role_label": "I am a...",
+    "role_tourist": "Tourist / Traveler",
+    "role_host": "Host / Service Provider",
+    "button": "Register",
+    "success": "Registration successful!",
+    "error": "Registration failed. User may already exist."
   },
   "listings": {
     "filters": "Filters",
@@ -157,7 +175,11 @@
     "not_charged": "You won't be charged yet. Host will review your request.",
     "login_required": "Please login to book.",
     "invalid_dates": "Please select valid check-in and check-out dates.",
-    "booking_alert": "Booking request sent for {{title}}!\nDates: {{start}} to {{end}}\nGuests: {{adults}} Adults, {{children}} Children\nTotal Price: ${{price}}"
+    "booking_alert": "Booking request sent for {{title}}!\nDates: {{start}} to {{end}}\nGuests: {{adults}} Adults, {{children}} Children\nTotal Price: ${{price}}",
+    "booking_success": "Booking successful! The host will review your request."
+  },
+  "common": {
+    "loading": "Loading..."
   },
   "footer": {
     "desc": "Discover the beauty of Naryn region. Book authentic stays, experiences, and buy local products directly from the community.",
